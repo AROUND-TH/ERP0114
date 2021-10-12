@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="mrp_capacity_check_view_form" model="ir.ui.view">
+        <field name="name">mrp.capacity.check.form</field>
+        <field name="model">mrp.capacity.check</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="Capacity Load">
+                    <field name="production_id" invisible='1'/>
+                    <field name="capacity_item_ids" nolabel='1'>
+                        <tree string="Capacity Items" edit="0" create="0">
+                            <field name="week_nro_2"/>
+                            <field name="monday" widget="date"/>
+                            <field name="sunday" widget="date"/>
+                            <field name="workcenter_id"/>
+                            <field name="wo_capacity_requirements" string="WO Requirements (H)"/>
+                            <field name="wc_available_capacity_cal" string="WC Weekly Available (H)"/>
+                        </tree>
+                        <form string="Capacity Items">
+                            <group>
+                                <group>
+                                     <field name="workcenter_id"/>
+                                    <field name="week_nro"/>
+                                    <field name="monday" widget="date"/>
+                                    <field name="sunday" widget="date"/>
+                                </group>
+                                <group>
+                                    <field name="wo_capacity_requirements" string="WO Requirements (H)"/>
+                                    <field name="wc_available_capacity_cal" string="WC Weekly Available (H)"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </group>
+                <group string="Overall Capacity Load">
+                    <field name="capacity_item_all_ids" nolabel='1'>
+                        <tree string="Capacity Items" edit="0" create="0" decoration-bf="indicator == True">
+                            <field name="week_nro_2"/>
+                            <field name="workcenter_id"/>
+                            <field name="wo_capacity_requirements" string="WO Requirements (H)"/>
+                            <button name="open_pivot_info" type="object" string="Capacity Elaluation" class="oe_highlight"/>
+                            <field name="wc_available_capacity_cal" string="WC Weekly Available (H)"/>
+                            <field name="wc_capacity_load" string="Loading %"/>
+                            <field name="wc_remaining_capacity" string="WC Remaining (H)"/>
+                            <field name="indicator" invisible='1'/>
+                        </tree>
+                        <form string="Capacity Items">
+                            <group>
+                                <group>
+                                     <field name="workcenter_id"/>
+                                    <field name="week_nro"/>
+                                </group>
+                                <group>
+                                    <field name="wo_capacity_requirements" string="WO Requirements (H)"/>
+                                    <field name="wc_available_capacity_cal" string="WC Weekly Available (H)"/>
+                                    <field name="wc_capacity_load" string="Loading %"/>
+                                    <field name="wc_remaining_capacity" string="WC Remaining (H)"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

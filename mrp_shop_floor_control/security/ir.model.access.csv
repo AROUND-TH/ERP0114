@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_workcenter_capacity_manager,mrp.workcenter.capacity.manager,model_mrp_workcenter_capacity,mrp.group_mrp_manager,1,1,1,1
+access_mrp_workcenter_capacity_user,mrp.workcenter.capacity.user,model_mrp_workcenter_capacity,mrp.group_mrp_user,1,1,1,0
+access_set_date_wizard_user,set.date.wizard.user,model_set_date_wizard,mrp.group_mrp_user,1,1,1,0
+access_mrp_confirmation_user,mrp.confirmation.user,model_mrp_confirmation,mrp.group_mrp_user,1,1,1,0
+access_mrp_capacity_check_user,mrp.capacity.check.user,model_mrp_capacity_check,mrp.group_mrp_user,1,1,1,0
+access_mrp_capacity_check_item_user,mrp.capacity.check.item.user,model_mrp_capacity_check_item,mrp.group_mrp_user,1,1,1,0
+access_mrp_capacity_check_allitem_user,mrp.capacity.check.allitem.user,model_mrp_capacity_check_allitem,mrp.group_mrp_user,1,1,1,0
+access_mrp_floating_times_manager,mrp.floating.times.manager,model_mrp_floating_times,mrp.group_mrp_manager,1,1,1,1
+access_mrp_floating_times_user,mrp.floating.times.user,model_mrp_floating_times,mrp.group_mrp_user,1,0,0,0

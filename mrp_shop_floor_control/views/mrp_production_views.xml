@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <record id="mrp_production_tree_view" model="ir.ui.view">
+        <field name="name">mrp.production.tree</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="date_planned_start_pivot" decoration-warning="state in ('draft', 'confirmed') and date_planned_start_pivot &lt; now" decoration-danger="state in ('draft', 'confirmed') and date_planned_start_pivot &lt; current_date" decoration-bf="state in ('draft', 'confirmed') and (date_planned_start_pivot &lt; current_date or date_planned_start_pivot &lt; now)"/>
+                <field name="date_planned_finished_pivot" decoration-warning="state not in ('done', 'cancel') and date_planned_finished_pivot &lt; now" decoration-danger="state not in ('done', 'cancel') and date_planned_finished_pivot &lt; current_date" decoration-bf="state not in ('done', 'cancel') and (date_planned_finished_pivot &lt; current_date or date_planned_finished_pivot &lt; now)"/>
+                <field name="date_planned_start_wo" optional="hide"/>
+                <field name="date_planned_finished_wo" optional="hide"/>
+                <field name="date_actual_start_wo" optional="hide"/>
+                <field name="date_actual_finished_wo" optional="hide"/>
+            </field>
+            <field name="user_id" position="after">
+                <field name="activity_ids" widget="list_activity" optional="hide"/>
+                <field name="activity_exception_decoration" widget="activity_exception" optional="hide"/>
+            </field>
+            <field name="date_planned_start" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="date_deadline" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+			<button name="button_mark_done" position="after">
+				<button name="%(action_mrp_confirmation)d" type="action" string="WO Confirmation" attrs="{'invisible': ['|', '|', ('state', 'in', ('draft','done','cancel')),('workorder_ids', '=', []),('wo_confirmation','=', False)]}" class="oe_highlight"/>
+			</button>
+            <button name="button_plan" position="attributes">
+                <attribute name="string">Schedule WOs</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', ('state', '!=', 'confirmed'), ('workorder_ids', '=', []), ('is_planned', '=', True)]}</attribute>
+            </button>
+            <button name="button_unplan" position="attributes">
+                <attribute name="string">Unschedule WOs</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', ('state', '!=', 'confirmed'), ('workorder_ids', '=', []), ('is_planned', '=', False)]}</attribute>
+            </button>
+            <field name="workorder_ids" position="before">
+                <field name="is_scheduled" invisible="1"/>
+                <button name="action_capacity_check" type="object" string="Capacity Load" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'in', ('draft','done','cancel')),('is_scheduled', '=', False)]}"/>
+            </field>
+            <field name="user_id" position="before">
+                <label for="date_planned_start_pivot" string="Planned Dates"/>
+                <div class="o_row">
+                    <field name="date_planned_start_pivot" attrs="{'readonly': [('is_scheduled', '!=', False)]}" decoration-warning="state not in ('done', 'cancel') and date_planned_start_pivot &lt; now" decoration-danger="state not in ('done', 'cancel') and date_planned_start_pivot &lt; current_date" decoration-bf="state not in ('done', 'cancel') and (date_planned_start_pivot &lt; current_date or date_planned_start_pivot &lt; now)"/>
+                    <strong attrs="{'invisible': [('date_planned_finished_pivot', '=', False)]}" class="mr8">to</strong>
+                    <field name="date_planned_finished_pivot" attrs="{'readonly': [('is_scheduled', '!=', False)]}"/>
+                    <field name="wo_confirmation" invisible="1"/>
+                </div>
+                <label for="date_planned_start_wo" string="Scheduled Dates" attrs="{'invisible': [('date_planned_start_wo','=',False)]}"/>
+                <div class="o_row" attrs="{'invisible': [('date_planned_start_wo','=',False)]}">
+                    <field name="date_planned_start_wo" attrs="{'readonly': [('move_raw_ids', '!=', [])]}"/>
+                    <strong attrs="{'invisible': [('date_planned_finished_wo', '=', False)]}" class="mr8">to</strong>
+                    <field name="date_planned_finished_wo" attrs="{'readonly': [('move_raw_ids', '!=', [])]}"/>
+                </div>
+                <label for="date_actual_start_wo" string="Actual Dates" attrs="{'invisible': [('date_actual_start_wo', '=', False)]}"/>
+                <div class="o_row" attrs="{'invisible': [('date_actual_start_wo', '=', False)]}">
+                    <field name="date_actual_start_wo" readonly="1"/>
+                    <strong attrs="{'invisible': [('date_actual_finished_wo', '=', False)]}" class="mr8">to</strong>
+                    <field name="date_actual_finished_wo" readonly="1"/>
+                </div>
+            </field>
+            <label for="date_planned_start" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="date_planned_start" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_mrp_production_filter_enhanced" model="ir.ui.view">
+        <field name="name">mrp.production.select</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="arch" type="xml">
+            <filter name="activities_exception" position="after">
+                <searchpanel>
+                    <field name="state"/>
+                    <field name="priority"/>
+                    <field name="reservation_state"/>
+                </searchpanel>
+            </filter>
+        </field>
+    </record>
+
+    <record id="mrp_production_action" model="ir.actions.act_window">
+        <field name="name">Manufacturing Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="view_mrp_production_filter_enhanced"/>
+        <field name="context">{'search_default_todo': True, 'default_company_id': allowed_company_ids[0]}</field>
+        <field name="domain">['|',('picking_type_id.active', '=', True),('state','in',('draft','confirmed','progress','to_close'))]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            No manufacturing order found. Let's create one.
+            </p><p>
+            Consume <a name="%(product.product_template_action)d" type='action' tabindex="-1">components</a> and build finished products using <a name="%(mrp.mrp_bom_form_action)d" type='action' tabindex="-1">bills of materials</a>
+            </p>
+        </field>
+    </record>
+</odoo>

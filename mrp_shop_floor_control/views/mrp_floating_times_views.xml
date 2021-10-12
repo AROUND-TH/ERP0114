@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_floating_times_tree" model="ir.ui.view">
+        <field name="name">mrp.floating.times.tree</field>
+        <field name="model">mrp.floating.times</field>
+        <field name="arch" type="xml">
+            <tree string="MRP Floating Times" multi_edit="1" edit="1" create="1" editable="top">
+                <field name="warehouse_id" decoration-bf="1"/>
+                <field name="mrp_release_time" widget="float_time"/>
+                <field name="mrp_ftbp_time" widget="float_time"/>
+                <field name="mrp_ftap_time" widget="float_time"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="mrp_floating_times_action" model="ir.actions.act_window">
+        <field name="name">MRP Floating Times</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.floating.times</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_mrp_floating_times"
+            name="MRP Floating Times"
+            action="mrp_floating_times_action"
+            sequence="20"
+            parent="mrp.menu_mrp_configuration"
+            groups="mrp.group_mrp_user"/>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="mrp_workcenter_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.form</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button  class="oe_stat_button" name="attachment_tree_view" type="object" icon="fa-files-o">
+                        <field string="Documents" name="doc_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <group name="capacity" position="after">
+                    <group string="Shop Floor Control">
+                        <field name="partial_confirmation"/>
+                        <field name="start_without_stock"/>
+                    </group>
+                </group>
+            </field>
+    </record>
+</odoo>
