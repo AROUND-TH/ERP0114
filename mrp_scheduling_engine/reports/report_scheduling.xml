@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="action_report_scheduling" model="ir.actions.report">
+        <field name="name">Production Scheduling Plan</field>
+        <field name="model">mrp.scheduling.engine.list</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mrp_scheduling_engine.report_mrp_scheduling</field>
+        <field name="report_file">mrp_scheduling_engine.report_mrp_scheduling</field>
+        <field name="print_report_name">'Production Scheduling Plan'</field>
+    </record>
+
+    <template id="report_mrp_scheduling">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2>Production Scheduling Plan</h2>
+                    <t t-foreach="docs" t-as="o">
+                        <div class="row mt32 mb32">
+                            <div class="col-4">
+                                <strong>Warehouse:</strong><br/>
+                                <span t-field="o.warehouse_id.display_name"/>
+                            </div>
+                        </div>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Workorder</th>
+                                    <th>Workcenter</th>
+                                    <th>Sequence</th>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Scheduled Start Date</th>
+                                    <th>Scheduled End Date</th>
+                                    <th>Expected Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.item_ids" t-as="l">
+                                    <td>
+                                        <span t-field="l.workorder_id.display_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.workcenter_id.display_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.scheduling_sequence"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.product_id.display_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="l.product_qty"/>
+                                        <span t-esc="l.product_uom_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.date_scheduled_start"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.date_scheduled_finished"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.duration_expected"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+

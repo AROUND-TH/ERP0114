@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_scheduling_engine_run_wizard" model="ir.ui.view">
+        <field name="name">MRP Scheduling Engine Run</field>
+        <field name="model">mrp.scheduling.engine.run</field>
+        <field name="arch" type="xml">
+            <form string="MRP Scheduling Engine Run">
+                <group>
+                    <group>
+                        <field name="warehouse_id" options="{'no_open':True,'no_create':True}"/>
+                        <field name="scheduling_start_date"/>
+                        <field name="scheduling_horizon"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_scheduling_engine_run" string="MRP Scheduling Engine Run" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_scheduling_engine_run" model="ir.actions.act_window">
+        <field name="name">MRP Scheduling Engine Run</field>
+        <field name="res_model">mrp.scheduling.engine.run</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mrp_scheduling_engine_run_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_mrp_scheduling_engine_root"
+        name="Scheduling"
+        parent="mrp.menu_mrp_root"
+        groups="mrp_scheduling_engine.group_scheduling_user"
+        sequence="20"/>
+
+    <menuitem
+        name="MRP Scheduling Engine Run"
+        id="menu_mrp_scheduling_engine_run"
+        action="action_mrp_scheduling_engine_run"
+        parent="menu_mrp_scheduling_engine_root"
+        groups="mrp_scheduling_engine.group_scheduling_administrator"
+        sequence="10"/>
+
+    <!-- MRP Temporary Message -->
+    <record id="view_mrp_scheduling_engine_message_form" model="ir.ui.view">
+        <field name="name">Message Form</field>
+        <field name="model">mrp.scheduling.message</field>
+        <field name="arch" type="xml">
+            <form string="Result">
+                <group>
+                    <field name="message"/>
+                </group>
+                <footer>
+                    <button class="oe_link" string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

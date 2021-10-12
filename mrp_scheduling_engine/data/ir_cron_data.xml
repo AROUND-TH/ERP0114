@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate="1">
+    <record forcecreate="True" id="mrp_schedule_engine_run" model="ir.cron">
+        <field name="name">MRP Scheduling Engine Run</field>
+        <field name="active" eval="True" />
+        <field name="user_id" ref="base.user_admin" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall">1</field>
+        <field name="model_id" ref="model_mrp_scheduling_engine_run"/>
+        <field name="state">code</field>
+        <field name="code">model.scheduling_engine_run_background()</field>
+    </record>
+</odoo>

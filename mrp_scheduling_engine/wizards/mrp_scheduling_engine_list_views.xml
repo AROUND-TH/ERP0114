@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_scheduling_engine_list_wizard" model="ir.ui.view">
+        <field name="name">MRP Scheduling Engine List</field>
+        <field name="model">mrp.scheduling.engine.list</field>
+        <field name="arch" type="xml">
+            <form string="MRP Scheduling Engine List">
+                <group>
+                    <group>
+                        <field name="warehouse_id" options="{'no_open':True,'no_create':True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_scheduling_engine_list" string="MRP Scheduling Engine List" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mrp_scheduling_engine_list_form" model="ir.ui.view">
+        <field name="name">MRP Scheduling Engine List</field>
+        <field name="model">mrp.scheduling.engine.list</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="warehouse_id" readonly="1"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <group>
+                    <field name="item_ids" nolabel="1" colspan="2">
+                        <tree create="0" delete="0" edit="0" decoration-danger="expected_delay  &gt; 0">
+                             <field name="workorder_id"/>
+                             <field name="workcenter_id"/>
+                             <field name="sequence" optional="hide"/>
+                             <field name="scheduled_dates_aligned"/>
+                             <field name="wo_state"/>
+                             <field name="production_id" optional="hide"/>
+                             <field name="mo_state" optional="hide"/>
+                             <field name="product_id" optional="hide"/>
+                             <field name="product_qty" optional="hide"/>
+                             <field name="product_uom_id" optional="hide"/>
+                             <field name="scheduling_date" optional="hide"/>
+                             <field name="scheduling_sequence"/>
+                             <field name="duration_expected"/>
+                             <field name="date_scheduled_start" string="NEW Scheduled Start Date"/>
+                             <field name="date_scheduled_finished" string="NEW Scheduled End Date"/>
+                             <field name="date_planned_start_wo"/>
+                             <field name="date_planned_finished_wo"/>
+                             <field name="date_planned_start_pivot"/>
+                             <field name="date_planned_finished_pivot"/>
+                             <field name="expected_delay"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="action_align_dates" string="MRP Dates Alignment" type="object" class="oe_highlight"/>
+                    <button name="%(action_report_scheduling)d" string="Print" type="action"/>
+                    <button special="cancel" string="Close"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_scheduling_engine_list" model="ir.actions.act_window">
+        <field name="name">MRP Scheduling Engine List</field>
+        <field name="res_model">mrp.scheduling.engine.list</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mrp_scheduling_engine_list_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        name="MRP Scheduling Engine List"
+        id="menu_mrp_scheduling_engine_list"
+        action="action_mrp_scheduling_engine_list"
+        parent="menu_mrp_scheduling_engine_root"
+        groups="mrp_scheduling_engine.group_scheduling_user"
+        sequence="20"/>
+</odoo>
