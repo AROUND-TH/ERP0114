@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+
+<odoo>
+    <record id="mrp_demand_massive_creation_wizard" model="ir.ui.view">
+        <field name="name">mrp.demand.massive.creation.wizard</field>
+        <field name="model">mrp.demand.create.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="demand_item_ids" nolabel="1">
+                            <tree>
+                                <field name="mrp_parameter_id"/>
+                                <field name="product_id"/>
+                                <field name="warehouse_id"/>
+                                <field name="planned_qty"/>
+                                <field name="uom_id"/>
+                                <field name="date_planned" widget="date"/>
+                                <field name="state"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <group>
+                                        <field name="mrp_parameter_id"/>
+                                        <field name="warehouse_id"/>
+                                        <field name="product_id"/>
+                                        <field name="state"/>
+                                    </group>
+                                    <group>
+                                        <field name="date_planned" widget="date"/>
+                                        <label for="planned_qty"/>
+                                        <div class="o_row">
+                                            <field name="planned_qty"/>
+                                            <field name="uom_id"/>
+                                        </div>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="old_mrp_parameter_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="new_mrp_parameter_id" options="{'no_create': True}"/>
+                            <field name="qty_factor"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="demand_count"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button type="object" name="do_populate_demand_item" string="Demand Items Selection" class="oe_highlight"/>
+                    <button type="object" name="do_massive_create" string="New PIRs Create" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_demand_massive_create" model="ir.actions.act_window">
+        <field name="name">MRP Demand Massive Creation</field>
+        <field name="res_model">mrp.demand.create.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="mrp_demand_massive_creation_wizard"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="mrp_planning_engine.model_mrp_demand"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_parameter_user,mrp.parameter.user,model_mrp_parameter,mrp_planning_engine.group_planning_user,1,0,0,0
+access_mrp_parameter_planner,mrp.parameter.manager,model_mrp_parameter,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_demand_user,mrp.demand.user,model_mrp_demand,mrp_planning_engine.group_planning_user,1,0,0,0
+access_mrp_demand_planner,mrp.demand.manager,model_mrp_demand,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_demand_create_wizard_planner,mrp.demand.create.wizard.manager,model_mrp_demand_create_wizard,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_element_user,mrp.element.user,model_mrp_element,mrp_planning_engine.group_planning_user,1,1,1,1
+access_mrp_planned_order_user,mrp.planned.order user,model_mrp_planned_order,mrp_planning_engine.group_planning_user,1,0,0,0
+access_mrp_planned_order_planner,mrp.planned.order manager,model_mrp_planned_order,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_planning_engine_run,mrp.planning.engine.run,model_mrp_planning_engine_run,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_planning_message,mrp.planning.message.run,model_mrp_planning_message,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_planning_engine_list,mrp.planning.engine.list,model_mrp_planning_engine_list,mrp_planning_engine.group_planning_user,1,1,1,1
+access_mrp_planning_engine_list_item,mrp.planning.engine.list.item,model_mrp_planning_engine_list_item,mrp_planning_engine.group_planning_user,1,1,1,1
+access_mrp_planning_volume_user,mrp.planning.volume.user,model_mrp_planning_volume,mrp_planning_engine.group_planning_user,1,0,0,0
+access_mrp_planning_volume_planner,mrp.planning.volume.manager,model_mrp_planning_volume,mrp_planning_engine.group_planning_administrator,1,1,1,1
+access_mrp_planning_engine_message,mrp.planning.engine.message,model_mrp_planning_engine_message,mrp_planning_engine.group_planning_user,1,1,1,1
+access_mrp_planning_engine_message_item,mrp.planning.engine.message.item,model_mrp_planning_engine_message_item,mrp_planning_engine.group_planning_user,1,1,1,1

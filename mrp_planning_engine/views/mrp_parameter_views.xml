@@ -1,0 +1,193 @@
+<?xml version="1.0" ?>
+
+<odoo>
+    <record id="mrp_parameter_tree" model="ir.ui.view">
+        <field name="name">mrp.parameter.tree</field>
+        <field name="model">mrp.parameter</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="MRP Planning Parameters" multi_edit="1">
+                <field name="sequence" widget="handle" readonly="1"/>
+                <field name="warehouse_id"/>
+                <field name="company_id" invisible="1"/>
+                <field name="product_id"/>
+                <field name="product_uom"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="demand_indicator"/>
+                <field name="mrp_type"/>
+                <field name="lot_qty_method"/>
+                <field name="trigger"/>
+                <field name="supply_method" />
+                <field name="bom_id"/>
+                <field name="main_supplierinfo_id"/>
+                <field name="source_warehouse_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="mrp_parameter_form" model="ir.ui.view" >
+        <field name="name">mrp.parameter.form</field>
+        <field name="model">mrp.parameter</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="MRP Planning Parameters">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button  class="oe_stat_button" name="action_view_planning_engine_list" string="Planning Engine List" type="object" icon="fa-list"/>
+                        <button class="oe_stat_button" name="action_view_planned_order" type="object" icon="fa-cogs">
+                            <field string="Planned Orders" name="planned_orders_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_demand_item" type="object" icon="fa-cogs">
+                            <field string="Demand Items" name="demand_items_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <h1>MRP Planning Parameters Master Data</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="product_id" options="{'no_open':True,'no_create':True}"/>
+                            <field name="supply_method"/>
+                            <field name="trigger"/>
+                            <field name="location_ids" invisible="1"/>
+                            <label for="mrp_transfer_delay" attrs="{'invisible':[('supply_method','!=', 'transfer')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_transfer_delay" attrs="{'invisible':[('supply_method','!=', 'transfer')]}"/>
+                                <field name="days_uom" attrs="{'invisible':[('supply_method','!=', 'transfer')]}"/>
+                            </div>
+                            <label for="mrp_transfer_lt" attrs="{'invisible':[('supply_method','!=', 'transfer')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_transfer_lt" attrs="{'invisible':[('supply_method','!=', 'transfer')]}"/>
+                                <field name="days_uom" attrs="{'invisible':[('supply_method','!=', 'transfer')]}"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="warehouse_id" options="{'no_open':True,'no_create':True}" />
+                            <field name="company_id" invisible="1"/>
+                            <field name="user_id" options="{'no_open':True,'no_create':True}" />
+                            <field name="bom_id" attrs="{'invisible': [('supply_method', 'not in', ('manufacture', 'subcontracting'))]}"/>
+                            <field name="main_supplierinfo_id" attrs="{'invisible': [('supply_method', 'not in', ('buy', 'subcontracting'))]}"/>
+                            <field name="source_warehouse_id" attrs="{'invisible': [('supply_method', '!=', 'transfer')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="mrp_type"/>
+                            <field name="requirements_method" attrs="{'invisible':[('mrp_type','!=', 'R')]}"/>
+                            <field name="lot_qty_method"/>
+                            <label for="mrp_threshold_stock" string="Reorder Point Threshold Stock" attrs="{'invisible':[('mrp_type','!=', 'R')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_threshold_stock" attrs="{'required':[('mrp_type','=', 'R')], 'invisible':[('mrp_type','!=', 'R')]}"/>
+                                <field name="product_uom" attrs="{'invisible':[('mrp_type','!=', 'R')]}"/>
+                            </div>
+                            <label for="mrp_maximum_stock" string="Reorder Point Maximum Stock" attrs="{'invisible':[('lot_qty_method','!=', 'R')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_maximum_stock" attrs="{'required':[('lot_qty_method','=', 'R')], 'invisible':[('lot_qty_method','!=', 'R')]}"/>
+                                <field name="product_uom" attrs="{'invisible':[('lot_qty_method','!=', 'R')]}"/>
+                            </div>
+                            <label for="mrp_fixed_qty" string="Fixed Lot qty" attrs="{'invisible':[('lot_qty_method','!=', 'F')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_fixed_qty" attrs="{'required':[('lot_qty_method','=', 'F')], 'invisible':[('lot_qty_method','!=', 'F')]}"/>
+                                <field name="product_uom" attrs="{'invisible':[('lot_qty_method','!=', 'F')]}"/>
+                            </div>
+                            <label for="mrp_coverage_days" attrs="{'invisible':[('lot_qty_method','!=', 'S')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_coverage_days" attrs="{'required':[('lot_qty_method','=', 'S')], 'invisible':[('lot_qty_method','!=', 'S')]}"/>
+                                <field name="days_uom" attrs="{'invisible':[('lot_qty_method','!=', 'S')]}"/>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="mrp_minimum_order_qty" />
+                            <div name="mrp_minimum_order_qty" class="o_row">
+                                <field name="mrp_minimum_order_qty" />
+                                <field name="product_uom"/>
+                                <span name="update_min_qty">
+                                    <button string="Get from main supplier" type="object" name="update_min_qty_from_main_supplier" attrs="{'invisible':[('supply_method', '!=', 'buy')]}" class="oe_link pt-0 oe_inline"/>
+                                </span>
+                            </div>
+                            <label for="mrp_maximum_order_qty"/>
+                            <div class="o_row">
+                                <field name="mrp_maximum_order_qty"/>
+                                <field name="product_uom"/>
+                            </div>
+                            <label for="mrp_qty_multiple"/>
+                            <div class="o_row">
+                                <field name="mrp_qty_multiple"/>
+                                <field name="product_uom"/>
+                            </div>
+                            <label for="mrp_safety_time" attrs="{'invisible':[('mrp_type','!=', 'M')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_safety_time" attrs="{'invisible':[('mrp_type','!=', 'M')]}"/>
+                                <field name="days_uom" attrs="{'invisible':[('mrp_type','!=', 'M')]}"/>
+                            </div>
+                            <label for="mrp_minimum_stock" attrs="{'invisible':[('mrp_type','!=', 'M')]}"/>
+                            <div class="o_row">
+                                <field name="mrp_minimum_stock" attrs="{'invisible':[('mrp_type','!=', 'M')]}"/>
+                                <field name="product_uom" attrs="{'invisible':[('mrp_type','!=', 'M')]}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="demand_indicator"/>
+                            <label for="mrp_demand_backward_day" attrs="{'invisible':[('demand_indicator','in', ('00','20'))]}"/>
+                            <div class="o_row">
+                                <field name="mrp_demand_backward_day" attrs="{'invisible':[('demand_indicator','in', ('00','20'))]}"/>
+                                <field name="days_uom" attrs="{'invisible':[('demand_indicator','in', ('00','20'))]}"/>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="mrp_frozen_days" attrs="{'invisible':[('demand_indicator','in', ('00','20'))]}"/>
+                            <div class="o_row">
+                                <field name="mrp_frozen_days" attrs="{'invisible':[('demand_indicator','in', ('00','20'))]}"/>
+                                <field name="days_uom" attrs="{'invisible':[('demand_indicator','in', ('00','20'))]}"/>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="mrp_parameter_search" model="ir.ui.view">
+        <field name="name">mrp.parameter.search</field>
+        <field name="model">mrp.parameter</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="MRP Planning Parameters">
+                <field name="product_id" />
+                <field name="warehouse_id"/>
+                <separator />
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <filter string="Automatic Planning" name="auto" domain="[('trigger','=','auto')]"/>
+                <filter string="Manual Planning" name="manual" domain="[('trigger','=','manual')]"/>
+                <group name='group_by' expand="0" string="Group By...">
+                    <filter name='warehouse' string="Warehouse" context="{'group_by':'warehouse_id'}"/>
+                    <filter name='user' string="Planner" context="{'group_by':'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="mrp_parameter_action">
+        <field name="name">MRP Planning Parameters</field>
+        <field name="res_model">mrp.parameter</field>
+        <field name="view_mode">tree,form,activity</field>
+    </record>
+
+    <menuitem
+        name="MRP Planning Parameters"
+        id="menu_mrp_planning_parameters"
+        action="mrp_parameter_action"
+        groups="mrp_planning_engine.group_planning_user"
+        parent="mrp.menu_mrp_bom"
+        sequence="10"/>
+</odoo>

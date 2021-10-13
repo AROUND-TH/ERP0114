@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+
+<odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">view.product.planning.parameter.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <notebook>
+                <page string="MRP Planning Parameters" attrs="{'invisible':[('mrp_parameter_count', '=' , 0)]}">
+                    <group string="MRP Planning Parameters">
+                        <field name="mrp_parameter_ids" nolabel="1">
+                            <tree>
+                                <field name="active" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="warehouse_id" groups="stock.group_stock_multi_warehouses"/>
+                                <field name="user_id" widget="many2one_avatar_user" options="{'no_open':True,'no_create':True}" optional="show"/>
+                                <field name="activity_ids" widget="list_activity" optional="show"/>
+                                <field name="lot_qty_method"/>
+                                <field name="trigger"/>
+                                <field name="supply_method" />
+                                <field name="main_supplier_id" optional="show"/>
+                                <field name="bom_id" optional="show"/>
+                                <field name="source_warehouse_id" optional="show"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="mrp_parameter_count" invisible="1"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- <record id="product_template_form_view_procurement_button" model="ir.ui.view">
+        <field name="name">product.template_procurement</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_orderpoints'][1]" position="attributes">
+                <attribute name="groups">mrp_planning_engine.group_stock_reordering_rules</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
+                <attribute name="groups">mrp_planning_engine.group_stock_reordering_rules</attribute>
+            </xpath>
+        </field>
+    </record> -->
+
+    <!-- <record id="product_product_form_view_procurement_button" model="ir.ui.view">
+        <field name="name">product.product_procurement</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_form_view_procurement_button" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_orderpoints'][1]" position="attributes">
+                <attribute name="groups">mrp_planning_engine.group_stock_reordering_rules</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
+                <attribute name="groups">mrp_planning_engine.group_stock_reordering_rules</attribute>
+            </xpath>
+        </field>
+    </record> -->
+</odoo>

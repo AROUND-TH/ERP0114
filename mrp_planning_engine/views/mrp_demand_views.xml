@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_demand_tree" model="ir.ui.view">
+        <field name="name">mrp.demand.tree</field>
+        <field name="model">mrp.demand</field>
+        <field name="arch" type="xml">
+            <tree string="MRP Independent Demand" multi_edit="1" edit="1" create="1" editable="top">
+                <header>
+                    <button name="button_done" type="object" string="Approve"/>
+                    <button name="button_draft" type="object" string="Reset"/>
+                    <button name="button_cancel" type="object" string="Cancel"/>
+                    <button name="button_force_mrp_qty" type="object" string="Force MRP Qty = 0"/>
+                    <button name="%(action_mrp_demand_massive_create)d" type="action" string="Massive Creation"/>
+                </header>
+                <field name="mrp_parameter_id" groups="stock.group_stock_multi_warehouses" options="{'no_open': True, 'no_create': True}"/>
+                <field name="warehouse_id" groups="stock.group_stock_multi_warehouses"/>
+                <field name="company_id" invisible="1"/>
+                <field name="product_id"/>
+                <field name="date_planned" widget="date"
+                    decoration-danger="date_planned &lt; now"
+                    decoration-bf="date_planned &lt; now"/>
+                <field name="planned_qty"/>
+                <field name="mrp_qty"/>
+                <field name="uom_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="activity_ids" widget="list_activity"/>
+                <button name="button_done" type="object" string="Approve" states="draft" class="oe_highlight"/>
+                <button name="button_cancel" type="object" string="Cancel" states="draft"/>
+                <button name="button_draft" type="object" string="Reset" states="done"/>
+                <field name="state" readonly="1" widget="badge" decoration-success="state == 'done'" decoration-warning="state == 'draft'" decoration-info="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mrp_demand_pivot" model="ir.ui.view">
+        <field name="name">mrp.demand.pivot</field>
+        <field name="model">mrp.demand</field>
+        <field name="arch" type="xml">
+            <pivot string="MRP Independent Demand">
+                <field name="date_planned" interval="week" type="col"/>
+                <field name="product_id" type="row"/>
+                <field name="warehouse_id" type="row"/>
+                <field name="planned_qty" type="measure"/>
+                <field name="mrp_qty" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_mrp_demand_graph" model="ir.ui.view">
+        <field name="name">mrp.demand.graph</field>
+        <field name="model">mrp.demand</field>
+        <field name="arch" type="xml">
+            <graph string="MRP Independent Demand" type="line">
+                <field name="date_planned" interval="week" type="col"/>
+                <field name="product_id" type="row"/>
+                <field name="warehouse_id" type="row"/>
+                <field name="planned_qty" type="measure"/>
+                <field name="mrp_qty" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="view_mrp_demand_activity" model="ir.ui.view">
+        <field name="name">mrp.demand.activity</field>
+        <field name="model">mrp.demand</field>
+        <field name="arch" type="xml">
+            <activity string="MRP Independent Demand">
+                <templates>
+                    <div t-name="activity-box">
+                        <div>
+                            <field name="mrp_parameter_id" muted="1" display="full"/>
+                            <field name="date_planned" muted="1" display="full" widget="date"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+    <record id="view_demand_mrp_filter" model="ir.ui.view">
+        <field name="name">mrp.demand.filter</field>
+        <field name="model">mrp.demand</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <filter string="Done" name="done" domain="[('state','=','done')]"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Cancel" name="cancel" domain="[('state','=','cancel')]"/>
+                <filter string="Active" name="active" domain="[('state','in',('done','draft'))]"/>
+                <filter string="My Demand Items" name="my_demand_items" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Late Activities" name="activities_overdue" domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Today Activities" name="activities_today" domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Future Activities" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Group By...">
+                    <filter string="Product" name="groupby_product" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter string="Warehouse" name="groupby_warehouse" domain="[]" context="{'group_by': 'warehouse_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="mrp_demand_action" model="ir.actions.act_window">
+        <field name="name">MRP Demand Management</field>
+        <field name="res_model">mrp.demand</field>
+        <field name="view_mode">tree,pivot,graph,activity</field>
+        <field name="context">{'search_default_active': 1}</field>
+    </record>
+
+    <menuitem
+        name="MRP Demand"
+        id="menu_mrp_demand"
+        action="mrp_demand_action"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp_planning_engine.group_planning_user"
+        sequence="20"/>
+</odoo>

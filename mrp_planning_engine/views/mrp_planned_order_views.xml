@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <record id="mrp_planned_order_view_tree" model="ir.ui.view">
+        <field name="name">mrp.planned.order.tree</field>
+        <field name="model">mrp.planned.order</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="conversion_indicator != True" decoration-bf="fixed == True" multi_edit="1">
+                <header>
+                    <button name="mrp_convert_planned_order" type="object" string="Convert Planned Order"/>
+                </header>
+                <field name="name"/>
+                <field name="mrp_parameter_id"/>
+                <field name="product_id"/>
+                <field name="warehouse_id"/>
+                <field name="user_id"  widget="many2one_avatar_user"/>
+                <field name="supply_method"/>
+                <field name="order_release_date" widget="date" decoration-danger="order_release_date &lt; (context_today() + datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')" decoration-bf="order_release_date &lt; (context_today() + datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')"/>
+                <field name="due_date" widget="date"/>
+                <field name="mrp_qty"/>
+                <field name="fixed"/>
+                <field name="conversion_indicator"/>
+                <button name="mrp_convert_planned_order" type="object" string="Convert Planned Order" icon="fa-cogs"/>
+                <button name="action_toggle_fixed" type="object" string="Fix Planned Order"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="mrp_planned_order_view_form" model="ir.ui.view">
+        <field name="name">mrp.planned.order.form</field>
+        <field name="model">mrp.planned.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_toggle_fixed" type="object" string="Fixing Planned Order Toggle" icon="fa-cogs"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" string="MRP Planned Order"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="mrp_parameter_id" />
+                            <field name="product_id" />
+                            <field name="warehouse_id" />
+                            <field name="supply_method"/>
+                            <field name="fixed"/>
+                            <field name="conversion_indicator"/>
+                        </group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="due_date" widget="date"/>
+                            <field name="order_release_date" widget="date"/>
+                            <label for="mrp_qty"/>
+                            <div class="o_row">
+                                <field name="mrp_qty"/>
+                                <field name="product_uom"/>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mrp_planned_order_view_pivot" model="ir.ui.view">
+        <field name="name">mrp.planned.order.pivot</field>
+        <field name="model">mrp.planned.order</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="warehouse_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="mrp_qty" type="measure"/>
+                <field name="due_date" interval="week" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="mrp_planned_order_view_search" model="ir.ui.view">
+        <field name="name">mrp.planned.order.search</field>
+        <field name="model">mrp.planned.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id" />
+                <field name="warehouse_id" />
+                <separator />
+                <filter string="Fixed" name="fixed" domain="[('fixed','=',True)]"/>
+                <filter string="My Planned Orders" name="my_planned_orders" domain="[('user_id', '=', uid)]"/>
+                <group name='group_by' expand="0" string="Group By...">
+                    <filter name='warehouse' string="Warehouse" context="{'group_by':'warehouse_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="mrp_planned_order_action" model="ir.actions.act_window">
+        <field name="name">Planned Orders</field>
+        <field name="res_model">mrp.planned.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="context">{'search_default_my_planned_orders': 1}</field>
+    </record>
+
+    <menuitem
+        name="Planned Orders"
+        id="menu_mrp_planned_order"
+        action="mrp_planned_order_action"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp_planning_engine.group_planning_user"
+        sequence="30"/>
+</odoo>

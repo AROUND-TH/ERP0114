@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) OpenValue All Rights Reserved
+
+{
+  'name': 'MRP Planning Engine',
+  'summary': 'MRP Planning Engine',
+  'version': '14.2.2.0',
+  'category': 'Manufacturing',
+  "website": 'www.openvalue.cloud',
+  'author': "OpenValue",
+  'support': 'info@openvalue.cloud',
+  'license': 'Other proprietary',
+  'price': 3000.00,
+  'currency': 'EUR',
+  'depends': [
+        "mrp",
+        "mrp_subcontracting",
+        "purchase_stock",
+        "openvalue_warehouse_calendar",
+        "mrp_shop_floor_control",
+    ],
+    'data': [
+        "security/mrp_planning_engine_security.xml",
+        "security/ir.model.access.csv",
+        "data/mrp_planned_order_sequence.xml",
+        #"views/res_config_settings_views.xml",
+        "views/mrp_planning_volume_views.xml",
+        "views/product_product_views.xml",
+        "views/mrp_parameter_views.xml",
+        #"views/mrp_element_views.xml",
+        "views/mrp_planned_order_views.xml",
+        "data/ir_cron.xml",
+        "wizards/mrp_planning_engine_run_views.xml",
+        "wizards/mrp_planning_engine_list_views.xml",
+        "wizards/mrp_planning_engine_message_views.xml",
+        "wizards/mrp_demand_massive_create_views.xml",
+        "views/mrp_demand_views.xml",
+    ],
+  'application': False,
+  'installable': True,
+  'auto_install': False,
+  'images': ['static/description/banner.png'],
+}

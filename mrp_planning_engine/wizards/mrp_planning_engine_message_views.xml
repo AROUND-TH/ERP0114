@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_planning_engine_message_wizard" model="ir.ui.view">
+        <field name="name">MRP Planning Engine Messages Report</field>
+        <field name="model">mrp.planning.engine.message</field>
+        <field name="arch" type="xml">
+            <form string="MRP Planning Engine Messages Report">
+                <group>
+                    <group>
+                        <field name="warehouse_id" options="{'no_open':True,'no_create':True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_planning_engine_message" string="MRP Planning Engine Messages" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mrp_planning_engine_message_form" model="ir.ui.view">
+        <field name="name">MRP Planning Engine Messages Form</field>
+        <field name="model">mrp.planning.engine.message</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="warehouse_id" readonly="1"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <group string="MRP Planning Engine Messages Report">
+                    <field name="item_ids" nolabel="1" colspan="2">
+                        <tree create="0" delete="0" editable="0">
+                            <field name="mrp_parameter_id"/>
+                            <field name="product_id"/>
+                            <field name="mrp_origin"/>
+                            <field name="document_name"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="release_date" widget="date"/>
+                            <field name="mrp_date" widget="date"/>
+                            <field name="mrp_qty"/>
+                            <field name="product_uom" groups="uom.group_uom"/>
+                            <field name="supply_method"/>
+                            <field name="fixed"/>
+                            <field name="note"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button special="cancel" string="Close"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_planning_engine_message" model="ir.actions.act_window">
+        <field name="name">MRP Planning Engine Messages</field>
+        <field name="res_model">mrp.planning.engine.message</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mrp_planning_engine_message_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        name="MRP Planning Engine Messages"
+        id="menu_mrp_planning_engine_message"
+        action="action_mrp_planning_engine_message"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp_planning_engine.group_planning_user"
+        sequence="60"/>
+</odoo>

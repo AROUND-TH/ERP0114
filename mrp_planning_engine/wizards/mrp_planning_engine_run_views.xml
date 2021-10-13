@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_mrp_planning_engine_run_wizard" model="ir.ui.view">
+        <field name="name">MRP Planning Engine Run</field>
+        <field name="model">mrp.planning.engine.run</field>
+        <field name="arch" type="xml">
+            <form string="MRP Planning Engine Run">
+                <group>
+                    <group>
+                        <field name="warehouse_id" options="{'no_open':True,'no_create':True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_planning_engine_run" string="MRP Planning Engine Run" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_planning_engine_run" model="ir.actions.act_window">
+        <field name="name">MRP Planning Engine Run</field>
+        <field name="res_model">mrp.planning.engine.run</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mrp_planning_engine_run_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        name="MRP Planning Engine Run"
+        id="menu_mrp_planning_engine_run"
+        action="action_mrp_planning_engine_run"
+        parent="mrp.mrp_planning_menu_root"
+        groups="mrp_planning_engine.group_planning_administrator"
+        sequence="40"/>
+
+    <!-- MRP Temporary Message -->
+    <record id="view_mrp_planning_message_form" model="ir.ui.view">
+        <field name="name">Message Form</field>
+        <field name="model">mrp.planning.message</field>
+        <field name="arch" type="xml">
+            <form string="Result">
+                <group>
+                    <field name="name"/>
+                </group>
+                <footer>
+                    <button class="oe_link" string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
